@@ -15,10 +15,15 @@ namespace WebApp.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost("soportes/by-dctoprv")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetSoportesByDCTOPRV([FromBody] string request)
         {
-            var result = _docSoport.GetSoporte("FMF193083").Result;   
+            if (string.IsNullOrWhiteSpace(request))
+                return BadRequest("El campo Dctoprv es obligatorio.");
+
+            var result = await _docSoport.GetSoporte(request);
 
             return Ok(result);
         }
