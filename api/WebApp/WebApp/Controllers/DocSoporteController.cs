@@ -1,6 +1,7 @@
 ﻿using Business;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.Request;
 
 namespace WebApp.Controllers
 {
@@ -24,6 +25,20 @@ namespace WebApp.Controllers
                 return BadRequest("El campo Dctoprv es obligatorio.");
 
             var result = await _docSoport.GetSoporte(request);
+
+            return Ok(result);
+        }
+
+
+        [HttpPost("soportes/Trade")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetSoportesTrade([FromBody] TradeDto request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Los datos son obligatorios.");
+
+            var result = await _docSoport.GetSoporteTrade(request);
 
             return Ok(result);
         }
