@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> GetSoportesByDCTOPRV([FromBody] string request)
         {
             if (string.IsNullOrWhiteSpace(request))
-                return BadRequest("El campo Dctoprv es obligatorio.");
+                return BadRequest("Los datos son obligatorios.");
 
             var result = await _docSoport.GetSoporte(request);
 
