@@ -16,7 +16,7 @@ namespace WebApp.Controllers
         }
 
 
-        [HttpPost("soportes/by-dctoprv")]
+        [HttpPost("soportes/dctoprv")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetSoportesByDCTOPRV([FromBody] string request)
