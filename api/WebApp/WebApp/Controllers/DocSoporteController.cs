@@ -15,19 +15,28 @@ namespace WebApp.Controllers
         _docSoport = doc;
         }
 
+     
 
-        [HttpPost("soportes/dctoprv")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetSoportesByDCTOPRV([FromBody] string request)
-        {
-            if (string.IsNullOrWhiteSpace(request))
-                return BadRequest("Los datos son obligatorios.");
+       [HttpPost("soportes/dctoprv")]
+       [ProducesResponseType(StatusCodes.Status200OK)]
+       [ProducesResponseType(StatusCodes.Status400BadRequest)]
+       public async Task<IActionResult> GetSoportesByDCTOPRV([FromBody] string request)
+       {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request))
+                    return BadRequest("Los datos son obligatorios.");
 
-            var result = await _docSoport.GetSoporte(request);
+                var result = await _docSoport.GetSoporte(request);
 
-            return Ok(result);
-        }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
+          
+       }
 
 
         [HttpPost("soportes/Trade")]
@@ -35,12 +44,21 @@ namespace WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetSoportesTrade([FromBody] TradeDto request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest("Los datos son obligatorios.");
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest("Los datos son obligatorios.");
 
-            var result = await _docSoport.GetSoporteTrade(request);
+                var result = await _docSoport.GetSoporteTrade(request);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
+        
+          
         }
     }
 }

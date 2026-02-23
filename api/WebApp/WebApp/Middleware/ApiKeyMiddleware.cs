@@ -14,7 +14,24 @@
 
         public async Task InvokeAsync(HttpContext context)
         {
-            // 🔎 Verificar si el header existe
+            // ✅ Permitir Swagger sin validación
+            if (context.Request.Path.StartsWithSegments("/swagger"))
+            {
+                await _next(context);
+                return;
+            }
+
+            // 🔐 Obtener ApiKey configurada
+            var apiKey = _configuration["ApiSecurity:ApiKey"];
+
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                await context.Response.WriteAsync("ApiKey no configurada en el servidor.");
+                return;
+            }
+
+            // 🔎 Validar que venga el header
             if (!context.Request.Headers.TryGetValue(HEADER_NAME, out var extractedKey))
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -22,10 +39,8 @@
                 return;
             }
 
-            // 🔐 Obtener key desde appsettings
-            var apiKey = _configuration["ApiSecurity:ApiKey"];
-
-            if (!apiKey.Equals(extractedKey))
+            // 🔐 Validar coincidencia
+            if (!string.Equals(apiKey, extractedKey, StringComparison.Ordinal))
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsync("Api Key inválida.");

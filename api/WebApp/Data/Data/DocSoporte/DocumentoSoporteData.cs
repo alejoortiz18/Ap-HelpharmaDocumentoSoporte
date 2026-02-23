@@ -23,6 +23,7 @@ namespace Data.DocSoporte
             PacienteDto? paciente = null;
 
             using var connection = _connectionFactory.CreateConnection();
+            
             await connection.OpenAsync();
 
             string query = @"
@@ -33,7 +34,7 @@ namespace Data.DocSoporte
                     CAST(m.cantidad AS INT) as cantidad,
                     m.ORDENNRO as lote,
                     cn.NOMBRE as convenio,
-                    CONVERT(VARCHAR(10), M.FECHA, 103) as fecha,
+                    M.FECHA as fecha,
                     m.BODEGA as bodega,
                     tv.DESCRIPCIO as tipoEntrega,
                     T.TIPOCAR as cartera,
@@ -83,9 +84,9 @@ namespace Data.DocSoporte
                         Factura = new FacturaDto
                         {
                             Convenio = Convert.ToString(reader["convenio"]).Trim(),
-                            Fecha = reader["fecha"] == DBNull.Value
+                            Fecha = reader.IsDBNull(reader.GetOrdinal("fecha"))
                                     ? DateTime.MinValue
-                                    : Convert.ToDateTime(reader["fecha"]),
+                                    : reader.GetDateTime(reader.GetOrdinal("fecha")),
                             Bodega = Convert.ToString(reader["bodega"]).Trim(),
                             TipoEntrega = Convert.ToString(reader["tipoEntrega"]).Trim(),
                             Cartera = Convert.ToString(reader["cartera"]).Trim(),
@@ -142,7 +143,7 @@ namespace Data.DocSoporte
                     CAST(m.cantidad AS INT) as cantidad,
                     m.ORDENNRO as lote,
                     cn.NOMBRE as convenio,
-                    CONVERT(VARCHAR(10), M.FECHA, 103) as fecha,
+                    M.FECHA as fecha,
                     m.BODEGA as bodega,
                     tv.DESCRIPCIO as tipoEntrega,
                     T.TIPOCAR as cartera,
@@ -194,9 +195,9 @@ namespace Data.DocSoporte
                         Factura = new FacturaDto
                         {
                             Convenio = Convert.ToString(reader["convenio"]).Trim(),
-                            Fecha = reader["fecha"] == DBNull.Value
+                            Fecha = reader.IsDBNull(reader.GetOrdinal("fecha"))
                                     ? DateTime.MinValue
-                                    : Convert.ToDateTime(reader["fecha"]),
+                                    : reader.GetDateTime(reader.GetOrdinal("fecha")),
                             Bodega = Convert.ToString(reader["bodega"]).Trim(),
                             TipoEntrega = Convert.ToString(reader["tipoEntrega"]).Trim(),
                             Cartera = Convert.ToString(reader["cartera"]).Trim(),
