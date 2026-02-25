@@ -34,7 +34,7 @@ namespace Business.DocSoporteBusiness
             {
                 string soporteDW = soporte.Substring(0, 3);
                 int noEntrega = int.Parse(soporte.Substring(3));
-                return _docSopDWData.GetSoporteOfima(soporteDW,noEntrega);
+                return _docSopDWData.GetSoporteDW(soporteDW,noEntrega);
             }
 
         }

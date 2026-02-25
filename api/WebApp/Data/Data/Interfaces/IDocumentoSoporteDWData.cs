@@ -8,6 +8,6 @@ namespace Data.Interfaces
 {
     public interface IDocumentoSoporteDWData
     {
-        Task<PacienteDto?> GetSoporteOfima(string prefijo, int noEntrega);
+        Task<PacienteDto?> GetSoporteDW(string prefijo, int noEntrega);
     }
 }

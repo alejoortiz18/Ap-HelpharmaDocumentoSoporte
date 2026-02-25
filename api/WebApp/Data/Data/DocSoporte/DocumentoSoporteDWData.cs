@@ -18,7 +18,7 @@ namespace Data.DocSoporte
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<PacienteDto?> GetSoporteOfima(string prefijo, int noEntrega)
+        public async Task<PacienteDto?> GetSoporteDW(string prefijo, int noEntrega)
         {
             PacienteDto? paciente = null;
 
@@ -127,3 +127,4 @@ namespace Data.DocSoporte
         }
     }
 }
+

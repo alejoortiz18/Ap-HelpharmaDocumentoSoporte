@@ -17,7 +17,7 @@ namespace Data
 
         public SqlConnection CreateConnection()
         {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetConnectionString("DefaultConnectionOfima");
             return new SqlConnection(connectionString);
         }
     }
