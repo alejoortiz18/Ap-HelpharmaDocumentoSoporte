@@ -1,4 +1,5 @@
-﻿using Data.DocSoporte;
+﻿using Data.Connections;
+using Data.DocSoporte;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +15,10 @@ namespace Data.Dependences
             #region [General]
             services.AddScoped<IDocumentoSoporteOfimaData, DocumentoSoporteOfimaData>();
             services.AddScoped<IDocumentoSoporteDWData, DocumentoSoporteDWData>();
+            
+
+            services.AddScoped<IOfimaConnectionFactory, OfimaConnectionFactory>();
+            services.AddScoped<IDwConnectionFactory, DwConnectionFactory>();
             #endregion
 
             return services;

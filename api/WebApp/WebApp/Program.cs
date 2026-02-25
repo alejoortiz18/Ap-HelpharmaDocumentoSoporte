@@ -12,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddScoped<DbConnectionFactory>();
 builder.Services.AddScoped<DocumentoSoporteOfimaData>();
 
 builder.Services.DependencyInjection();

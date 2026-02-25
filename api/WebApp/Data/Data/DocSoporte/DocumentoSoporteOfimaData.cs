@@ -11,12 +11,13 @@ namespace Data.DocSoporte
 {
     public class DocumentoSoporteOfimaData : IDocumentoSoporteOfimaData
     {
-        private readonly DbConnectionFactory _connectionFactory;
+        private readonly IOfimaConnectionFactory _connectionFactory;
 
-        public DocumentoSoporteOfimaData(DbConnectionFactory connectionFactory)
+        public DocumentoSoporteOfimaData(IOfimaConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
+                
 
         public async Task<PacienteDto?> GetSoporteOfima(string DCTOPRV)
         {
