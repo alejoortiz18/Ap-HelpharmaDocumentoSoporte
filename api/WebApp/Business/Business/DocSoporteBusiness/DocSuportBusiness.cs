@@ -27,8 +27,13 @@ namespace Business.DocSoporteBusiness
 
             if(origen == "ofima")
             {
+                TradeDto trade = new TradeDto
+                {
+                    Tipodcto = soporte.Substring(0, 2),
+                    Nrodcto = soporte.Substring(2)
+                };
 
-                return _docSopData.GetSoporteOfima(soporte);
+                return _docSopData.GetSoporteTradeOfima(trade);
             }
             else
             {
