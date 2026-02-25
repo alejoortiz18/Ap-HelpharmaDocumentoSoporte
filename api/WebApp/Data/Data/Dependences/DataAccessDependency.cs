@@ -12,7 +12,8 @@ namespace Data.Dependences
         public static IServiceCollection DataDependencyInjectionAccess(this IServiceCollection services)
         {
             #region [General]
-            services.AddScoped<IDocumentoSoporteData, DocumentoSoporteData>();
+            services.AddScoped<IDocumentoSoporteOfimaData, DocumentoSoporteOfimaData>();
+            services.AddScoped<IDocumentoSoporteDWData, DocumentoSoporteDWData>();
             #endregion
 
             return services;

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Data.Interfaces
 {
-    public interface IDocumentoSoporteData
+    public interface IDocumentoSoporteOfimaData
     {
-        Task<PacienteDto?> GetSoporte(string DCTOPRV);
-        Task<PacienteDto?> GetSoporteTrade(TradeDto trade);
+        Task<PacienteDto?> GetSoporteOfima(string DCTOPRV);
+        Task<PacienteDto?> GetSoporteTradeOfima(TradeDto trade);
     }
 }

@@ -5,7 +5,7 @@ namespace Business
 {
     public interface IDocSoportBusiness
     {
-        Task<PacienteDto?> GetSoporte(string DCTOPRV);
+        Task<PacienteDto?> GetSoporte(SoporteDto request);
         Task<PacienteDto?> GetSoporteTrade(TradeDto trade);
     }
 }

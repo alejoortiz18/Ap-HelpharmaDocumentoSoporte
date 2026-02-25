@@ -9,16 +9,16 @@ using System.Text;
 
 namespace Data.DocSoporte
 {
-    public class DocumentoSoporteData : IDocumentoSoporteData
+    public class DocumentoSoporteOfimaData : IDocumentoSoporteOfimaData
     {
         private readonly DbConnectionFactory _connectionFactory;
 
-        public DocumentoSoporteData(DbConnectionFactory connectionFactory)
+        public DocumentoSoporteOfimaData(DbConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<PacienteDto?> GetSoporte(string DCTOPRV)
+        public async Task<PacienteDto?> GetSoporteOfima(string DCTOPRV)
         {
             PacienteDto? paciente = null;
 
@@ -128,7 +128,7 @@ namespace Data.DocSoporte
             return paciente;
         }
 
-        public async Task<PacienteDto?> GetSoporteTrade(TradeDto trade)
+        public async Task<PacienteDto?> GetSoporteTradeOfima(TradeDto trade)
         {
             PacienteDto? paciente = null;
 

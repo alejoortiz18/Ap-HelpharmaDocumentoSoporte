@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddScoped<DbConnectionFactory>();
-builder.Services.AddScoped<DocumentoSoporteData>();
+builder.Services.AddScoped<DocumentoSoporteOfimaData>();
 
 builder.Services.DependencyInjection();
 

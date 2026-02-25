@@ -20,11 +20,11 @@ namespace WebApp.Controllers
        [HttpPost("soportes/dctoprv")]
        [ProducesResponseType(StatusCodes.Status200OK)]
        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-       public async Task<IActionResult> GetSoportesByDCTOPRV([FromBody] string request)
+       public async Task<IActionResult> GetSoportesByDCTOPRV([FromBody] SoporteDto request)
        {
             try
             {
-                if (string.IsNullOrWhiteSpace(request))
+                if (!ModelState.IsValid)
                     return BadRequest("Los datos son obligatorios.");
 
                 var result = await _docSoport.GetSoporte(request);
