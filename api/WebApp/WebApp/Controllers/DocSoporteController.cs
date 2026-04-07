@@ -71,7 +71,7 @@ namespace WebApp.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Los datos son obligatorios.");
-                //Task<SoporteEntregaDto?> GetDatosSoportes(SoporteDto request)
+                request.Soporte = request.Soporte.Replace("-", "");
                 var result = await _docSoport.GetDatosSoportes(request);
 
                 return Ok(result);
