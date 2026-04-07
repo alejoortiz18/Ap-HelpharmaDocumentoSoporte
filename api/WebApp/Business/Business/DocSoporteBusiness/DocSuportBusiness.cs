@@ -9,13 +9,13 @@ namespace Business.DocSoporteBusiness
 {
     public class DocSuportBusiness : IDocSoportBusiness
     {
-        private readonly IDocumentoSoporteOfimaData _docSopData;
+        private readonly IDocumentoSoporteOfimaData _docSopDataOfima;
         private readonly IDocumentoSoporteDWData _docSopDWData;
 
 
         public DocSuportBusiness(IDocumentoSoporteOfimaData doc, IDocumentoSoporteDWData docSopDWData)
         {
-            _docSopData = doc;
+            _docSopDataOfima = doc;
             _docSopDWData = docSopDWData;
         }
 
@@ -33,7 +33,7 @@ namespace Business.DocSoporteBusiness
                     Nrodcto = soporte.Substring(2)
                 };
 
-                return _docSopData.GetSoporteTradeOfima(trade);
+                return _docSopDataOfima.GetSoporteTradeOfima(trade);
             }
             else
             {
@@ -46,8 +46,36 @@ namespace Business.DocSoporteBusiness
 
         public Task<PacienteDto?> GetSoporteTrade(TradeDto trade)
         {
-            return _docSopData.GetSoporteTradeOfima(trade);
+            return _docSopDataOfima.GetSoporteTradeOfima(trade);
         }
+
+
+        public Task<SoporteEntregaDto?> GetDatosSoportes(SoporteDto request)
+        {
+            var soporte = request.Soporte;
+
+            string origen = char.IsDigit(soporte[2]) ? "ofima" : "DW";
+
+            if (origen == "ofima")
+            {
+                TradeDto trade = new TradeDto
+                {
+                    Tipodcto = soporte.Substring(0, 2),
+                    Nrodcto = soporte.Substring(2)
+                };
+
+                return _docSopDataOfima.GetDatosSoportes(trade);
+            }
+            return null;
+            //else
+            //{
+            //    string soporteDW = soporte.Substring(0, 3);
+            //    int noEntrega = int.Parse(soporte.Substring(3));
+            //    return _docSopDWData.GetSoporteDW(soporteDW, noEntrega);
+            //}
+
+        }
+
 
     }
 }

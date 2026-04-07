@@ -10,5 +10,6 @@ namespace Data.Interfaces
     {
         Task<PacienteDto?> GetSoporteOfima(string DCTOPRV);
         Task<PacienteDto?> GetSoporteTradeOfima(TradeDto trade);
+        Task<SoporteEntregaDto?> GetDatosSoportes(TradeDto trade);
     }
 }

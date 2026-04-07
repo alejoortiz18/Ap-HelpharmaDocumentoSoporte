@@ -1,6 +1,7 @@
 ﻿using Business;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.DocumentoSoporteDto;
 using Models.Dto.Request;
 
 namespace WebApp.Controllers
@@ -59,6 +60,27 @@ namespace WebApp.Controllers
             }
         
           
+        }
+
+        [HttpPost("soportes/DatosSoportes")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetDatosSoportesByName([FromBody] SoporteDto request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest("Los datos son obligatorios.");
+                //Task<SoporteEntregaDto?> GetDatosSoportes(SoporteDto request)
+                var result = await _docSoport.GetDatosSoportes(request);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
+
         }
     }
 }

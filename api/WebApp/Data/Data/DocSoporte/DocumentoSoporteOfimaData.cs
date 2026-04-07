@@ -240,5 +240,122 @@ namespace Data.DocSoporte
             return paciente;
         }
 
+
+        public async Task<SoporteEntregaDto?> GetDatosSoportes(TradeDto trade)
+        {
+            SoporteEntregaDto? soporte = null;
+
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            string query = @"
+            SELECT 
+                cn.codcanal AS IdConvenio,
+                cn.NOMBRE as NombreConvenio,
+                M.FECHA as Fecha,
+                m.BODEGA as IdBodega,
+                bo.SEV_FARM as NombreSede,
+                '' as NombreActividad,
+                tv.DESCRIPCIO as TipoEntrega,
+                tm.TIPOFAC as TipoPlan,
+                T.TIPOCAR as IdCartera,
+                c.NOMBRE as NombrePaciente,
+                c.TIPODC as IdTipoId,
+                c.NIT as IdPaciente,
+                c.CELULAR as Celular,
+                c.TEL1 as Telefono,
+                c.DIRECCION as Direccion,
+                c.COMENTARIO as Complemento,
+                T.NOTA as Observacion,
+                M.VALORUNIT AS ValorCM,
+                m.ORDENENTMV as Ordenes,
+                m.producto,
+                m.nombre as NombreMedicamento,
+                CAST(m.cantidad AS INT) as cantidad,
+                0 as ValorMx
+            FROM trade t 
+                left join mvtrade m on t.origen = m.origen and t.tipodcto = m.tipodcto and t.nrodcto = m.nrodcto
+                left join trademas tm on t.tipodcto = tm.tipodcto and t.nrodcto = tm.nrodcto
+                INNER JOIN CANAL cn ON cn.CODCANAL = tm.CODCANAL 
+                left join mtprocli c on t.nit = c.nit
+                inner join TIPOVTA TV ON TV.TIPOVTA = T.TIPOVTA
+                inner join MTBODEGA bo  on bo.LOGIN = m.BODEGA
+            WHERE   
+                T.NRODCTO = @NRODCTO
+                AND T.TIPODCTO = @TIPODCTO
+                AND m.PRODUCTO <> 'S3501'
+
+            ";
+
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.Add("@TIPODCTO", SqlDbType.VarChar).Value = trade.Tipodcto;
+            command.Parameters.Add("@NRODCTO", SqlDbType.VarChar).Value = trade.Nrodcto;
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            decimal totalValorCM = 0;
+
+            while (await reader.ReadAsync())
+            {
+                if (soporte == null)
+                {
+                    soporte = new SoporteEntregaDto
+                    {
+                        IdConvenio = reader["IdConvenio"]?.ToString()?.Trim(),
+                        NombreConvenio = reader["NombreConvenio"]?.ToString()?.Trim(),
+                        Fecha = reader.GetDateTime(reader.GetOrdinal("Fecha")),
+                        IdBodega = reader["IdBodega"]?.ToString()?.Trim(),
+                        NombreSede = reader["NombreSede"]?.ToString()?.Trim(),
+                        NombreActividad = reader["NombreActividad"]?.ToString()?.Trim(),
+                        TipoEntrega = reader["TipoEntrega"]?.ToString()?.Trim(),
+                        TipoPlan = reader["TipoPlan"]?.ToString()?.Trim(),
+                        IdCartera = reader["IdCartera"]?.ToString()?.Trim(),
+                        NombrePaciente = reader["NombrePaciente"]?.ToString()?.Trim(),
+                        idTipoId = reader["IdTipoId"]?.ToString()?.Trim(),
+                        IdPaciente = reader["IdPaciente"] == DBNull.Value ? 0 : Convert.ToInt32(reader["IdPaciente"]),
+                        Celular = reader["Celular"]?.ToString()?.Trim(),
+                        Telefono = reader["Telefono"]?.ToString()?.Trim(),
+                        Direccion = reader["Direccion"]?.ToString()?.Trim(),
+                        Complemento = reader["Complemento"]?.ToString()?.Trim(),
+                        Observacion = reader["Observacion"]?.ToString()?.Trim(),
+                        ValorCM = "0",
+                        medicamentos = new List<OrdenDto>()
+                    };
+                }
+
+                var producto = reader["producto"]?.ToString()?.Trim();
+
+                var valorCM = reader["ValorCM"] == DBNull.Value
+                                ? 0
+                                : Convert.ToDecimal(reader["ValorCM"]);
+
+                // 🔥 regla negocio
+                if (producto == "S3500")
+                {
+                    valorCM = Math.Abs(valorCM);
+                    totalValorCM += valorCM;
+                }
+
+                var orden = new OrdenDto
+                {
+                    Ordenes = reader["Ordenes"]?.ToString()?.Trim(),
+                    Producto = producto,
+                    Nombre = reader["NombreMedicamento"]?.ToString()?.Trim(),
+                    Cantidad = reader["cantidad"] == DBNull.Value ? 0 : Convert.ToInt32(reader["cantidad"]),
+                    Lote = "",
+                    ValorMx = 0
+                };
+
+                soporte.medicamentos.Add(orden);
+            }
+
+            if (soporte != null)
+            {
+                soporte.ValorCM = totalValorCM.ToString("0.##");
+            }
+
+            return soporte;
+        }
+
     }
 }
