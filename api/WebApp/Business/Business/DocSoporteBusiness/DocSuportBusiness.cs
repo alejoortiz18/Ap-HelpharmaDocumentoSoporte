@@ -66,13 +66,15 @@ namespace Business.DocSoporteBusiness
 
                 return _docSopDataOfima.GetDatosSoportes(trade);
             }
-            return null;
-            //else
-            //{
-            //    string soporteDW = soporte.Substring(0, 3);
-            //    int noEntrega = int.Parse(soporte.Substring(3));
-            //    return _docSopDWData.GetSoporteDW(soporteDW, noEntrega);
-            //}
+            else
+            {
+                TradeDto trade = new TradeDto
+                {
+                    Tipodcto = soporte.Substring(0, 3),
+                    Nrodcto = soporte.Substring(3)//FMF
+                };
+                return _docSopDWData.GetDatosSoportes(trade);
+            }
 
         }
 
