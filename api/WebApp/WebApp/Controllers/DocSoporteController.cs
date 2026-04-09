@@ -78,7 +78,10 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.ToString());
+                return StatusCode(400, new
+                {
+                    mensaje = ex.Message
+                });
             }
 
         }

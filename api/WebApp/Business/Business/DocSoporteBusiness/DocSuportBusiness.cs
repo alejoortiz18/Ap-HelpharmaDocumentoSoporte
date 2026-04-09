@@ -55,26 +55,33 @@ namespace Business.DocSoporteBusiness
             var soporte = request.Soporte;
 
             string origen = char.IsDigit(soporte[2]) ? "ofima" : "DW";
-
-            if (origen == "ofima")
+            try
             {
-                TradeDto trade = new TradeDto
+                if (origen == "ofima")
                 {
-                    Tipodcto = soporte.Substring(0, 2),
-                    Nrodcto = soporte.Substring(2)
-                };
+                    TradeDto trade = new TradeDto
+                    {
+                        Tipodcto = soporte.Substring(0, 2),
+                        Nrodcto = soporte.Substring(2)
+                    };
 
-                return _docSopDataOfima.GetDatosSoportes(trade);
-            }
-            else
-            {
-                TradeDto trade = new TradeDto
+                    return _docSopDataOfima.GetDatosSoportes(trade);
+                }
+                else
                 {
-                    Tipodcto = soporte.Substring(0, 3),
-                    Nrodcto = soporte.Substring(3)//FMF
-                };
-                return _docSopDWData.GetDatosSoportes(trade);
+                    TradeDto trade = new TradeDto
+                    {
+                        Tipodcto = soporte.Substring(0, 3),
+                        Nrodcto = soporte.Substring(3)//FMF
+                    };
+                    return _docSopDWData.GetDatosSoportes(trade);
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("error de codigo", ex);
+            }
+
 
         }
 
