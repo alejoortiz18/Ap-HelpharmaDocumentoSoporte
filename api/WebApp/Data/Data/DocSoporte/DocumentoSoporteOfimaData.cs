@@ -5,6 +5,7 @@ using Models.Dto.Request;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Text;
 
 namespace Data.DocSoporte
@@ -169,7 +170,8 @@ namespace Data.DocSoporte
                 WHERE
                     T.TIPODCTO= @TIPODCTO AND
                     T.NRODCTO= @NRODCTO
-                    and m.PRODUCTO <> 'S3501';";
+                    and m.PRODUCTO <> 'S3501'
+                    and m.PRODUCTO <> 'S3500';";
 
             using var command = new SqlCommand(query, connection);
             command.Parameters.Add("@TIPODCTO", SqlDbType.VarChar).Value = trade.Tipodcto;
@@ -357,5 +359,63 @@ namespace Data.DocSoporte
             return soporte;
         }
 
+
+        //public SoporteRequest GetSoporte(SoporteRequest soporte)
+        //{
+        //    PacienteDto? paciente = null;
+
+        //    using var connection = _connectionFactory.CreateConnection();
+        //    await connection.OpenAsync();
+
+        //    string query = @"
+        //       SELECT *
+        //          FROM [FilesNas].[dbo].[ArchivosIndexados]
+        //          where NumeroFactura = '' and Prefijo = '' and Extension = 'pdf'
+        //        ;";
+
+        //    using var command = new SqlCommand(query, connection);
+        //    command.Parameters.Add("@NumeroFactura", SqlDbType.VarChar).Value = soporte.NumeroFactura;
+        //    command.Parameters.Add("@Prefijo", SqlDbType.VarChar).Value = soporte.Prefijo;
+
+        //    using var reader = await command.ExecuteReaderAsync();
+
+        //    while (await reader.ReadAsync())
+        //    {
+        //        // ✅ Crear paciente una sola vez
+        //        if (paciente == null)
+        //        {
+        //            paciente = new PacienteDto
+        //            {
+        //                NombrePaciente = Convert.ToString(reader["nombrePaciente"]).Trim(),
+        //                TipoId = Convert.ToString(reader["tipoId"]).Trim(),
+        //                Paciente = Convert.ToString(reader["paciente"]).Trim(),
+        //                DireccionPaciente = Convert.ToString(reader["direccionPaciente"]).Trim(),
+        //                TelefonoPaciente = Convert.ToString(reader["telefonoPaciente"]).Trim(),
+        //                CelularPaciente = Convert.ToString(reader["celularPaciente"]).Trim(),
+        //                Complemento = Convert.ToString(reader["complemento"]).Trim(),
+        //                ValorCMTotal = 0,
+
+        //                Factura = new FacturaDto
+        //                {
+        //                    Convenio = Convert.ToString(reader["convenio"]).Trim(),
+        //                    Fecha = reader.IsDBNull(reader.GetOrdinal("fecha"))
+        //                            ? DateTime.MinValue
+        //                            : reader.GetDateTime(reader.GetOrdinal("fecha")),
+        //                    Bodega = Convert.ToString(reader["bodega"]).Trim(),
+        //                    TipoEntrega = Convert.ToString(reader["tipoEntrega"]).Trim(),
+        //                    Cartera = Convert.ToString(reader["cartera"]).Trim(),
+        //                    Observacion = Convert.ToString(reader["observacion"]).Trim(),
+        //                    Usuario = Convert.ToString(reader["usuario"]).Trim(),
+        //                    Ordenes = new List<OrdenDto>(),
+        //                },
+
+        //            };
+        //        }
+              
+        //    }
+
+        //    return paciente;
+
+        //}
     }
 }
