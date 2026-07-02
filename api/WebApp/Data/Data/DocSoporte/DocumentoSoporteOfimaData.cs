@@ -60,7 +60,8 @@ namespace Data.DocSoporte
                     inner join TIPOVTA TV ON TV.TIPOVTA = T.TIPOVTA
                 WHERE
                     t.DCTOPRV = @DCTOPRV
-                    and m.PRODUCTO <> 'S3501';";
+                    and m.PRODUCTO <> 'S3501'
+                    and m.PRODUCTO <> 'S3500';";
 
             using var command = new SqlCommand(query, connection);
             command.Parameters.Add("@DCTOPRV", SqlDbType.VarChar).Value = DCTOPRV;
@@ -286,7 +287,7 @@ namespace Data.DocSoporte
                 T.NRODCTO = @NRODCTO
                 AND T.TIPODCTO = @TIPODCTO
                 AND m.PRODUCTO <> 'S3501'
-
+                AND m.PRODUCTO <> 'S3500'
             ";
 
             using var command = new SqlCommand(query, connection);
@@ -314,7 +315,7 @@ namespace Data.DocSoporte
                         IdCartera = reader["IdCartera"]?.ToString()?.Trim(),
                         NombrePaciente = reader["NombrePaciente"]?.ToString()?.Trim(),
                         idTipoId = reader["IdTipoId"]?.ToString()?.Trim(),
-                        IdPaciente = reader["IdPaciente"] == DBNull.Value ? 0 : Convert.ToInt32(reader["IdPaciente"]),
+                        IdPaciente = reader["IdPaciente"] == DBNull.Value ? string.Empty : Convert.ToString(reader["IdPaciente"])?.Trim() ?? string.Empty,
                         Celular = reader["Celular"]?.ToString()?.Trim(),
                         Telefono = reader["Telefono"]?.ToString()?.Trim(),
                         Direccion = reader["Direccion"]?.ToString()?.Trim(),

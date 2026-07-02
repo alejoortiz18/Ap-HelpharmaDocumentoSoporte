@@ -26,7 +26,7 @@ namespace Models.Dto.DocumentoSoporteDto
         public string NombrePaciente { get; set; }
         public string idTipoId { get; set; }
 
-        public int IdPaciente { get; set; }
+        public string IdPaciente { get; set; }
 
         public string Celular { get; set; }
 

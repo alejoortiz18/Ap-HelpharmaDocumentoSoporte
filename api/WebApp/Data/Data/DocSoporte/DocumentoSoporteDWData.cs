@@ -203,7 +203,7 @@ namespace Data.DocSoporte
                     soporte.IdCartera = reader["IdCartera"]?.ToString()?.Trim();
                     soporte.NombrePaciente = reader["NombrePaciente"]?.ToString()?.Trim();
                     soporte.idTipoId = reader["IdTipoId"]?.ToString()?.Trim();
-                    soporte.IdPaciente = reader["IdPaciente"] == DBNull.Value ? 0 : Convert.ToInt32(reader["IdPaciente"]);
+                    soporte.IdPaciente = reader["IdPaciente"] == DBNull.Value ? string.Empty : Convert.ToString(reader["IdPaciente"])?.Trim() ?? string.Empty;
                     soporte.Celular = reader["Celular"]?.ToString()?.Trim();
                     soporte.Telefono = reader["Telefono"]?.ToString()?.Trim();
                     soporte.Direccion = reader["Direccion"]?.ToString()?.Trim();
